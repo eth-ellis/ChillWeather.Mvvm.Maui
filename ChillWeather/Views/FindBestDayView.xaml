@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    xmlns:viewModels="clr-namespace:ChillWeather.ViewModels"
+    x:Class="ChillWeather.Views.FindBestDayView"
+    x:DataType="viewModels:FindBestDayViewModel"
+    ios:Page.ModalPresentationStyle="PageSheet"
+    Shell.PresentationMode="ModalAnimated">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+            
+            <Label
+                Text="Find the best day this week"
+                FontSize="28"
+                FontAttributes="Bold" />
+            
+            <Label
+                Text="Do you prefer hot or cold weather?"
+                FontSize="17"
+                FontAttributes="Bold" />
+            
+            <Button
+                Text="Hot weather"
+                TextColor="{StaticResource Red}"
+                BackgroundColor="Transparent"
+                BorderColor="{StaticResource Red}"
+                BorderWidth="1"
+                Command="{Binding HotWeatherCommand}" />
+            
+            <Button
+                Text="Cold weather"
+                TextColor="{StaticResource Blue}"
+                BackgroundColor="Transparent"
+                BorderColor="{StaticResource Blue}"
+                BorderWidth="1"
+                Command="{Binding ColdWeatherCommand}" />
+            
+            <Button
+                Text="Cancel"
+                TextColor="{StaticResource Orange}"
+                BackgroundColor="Transparent"
+                BorderColor="{StaticResource Orange}"
+                BorderWidth="1"
+                Command="{Binding CancelCommand}" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

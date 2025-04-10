@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:ChillWeather.Models"
+    xmlns:viewModels="clr-namespace:ChillWeather.ViewModels"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:Class="ChillWeather.Views.ForecastView"
+    x:DataType="viewModels:ForecastViewModel">
+
+    <RefreshView
+        IsRefreshing="{Binding IsRefreshing}"
+        Command="{Binding RefreshCommand}">
+
+        <ScrollView>
+
+            <VerticalStackLayout
+                Padding="20">
+
+                <Label
+                    Text="You're seeing the forecast for"
+                    FontSize="17"
+                    Margin="0,0,0,10" />
+
+                <Label
+                    Text="{Binding CurrentLocation}"
+                    FontSize="20"
+                    Margin="0,0,0,10" />
+
+                <Label
+                    Text="Change location"
+                    TextColor="{StaticResource Blue}"
+                    FontSize="17"
+                    FontAttributes="Bold"
+                    Margin="0,0,0,20">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ChangeLocationCommand}" />
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+                <ActivityIndicator
+                    IsVisible="{Binding IsBusy}"
+                    IsRunning="True" />
+
+                <VerticalStackLayout
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertBool}}">
+
+                    <Label
+                        Text="Find the best day this week"
+                        TextColor="{StaticResource Blue}"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,20">
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding FindBestDayCommand}" />
+                        </Label.GestureRecognizers>
+
+                    </Label>
+
+                    <VerticalStackLayout
+                        BindableLayout.ItemsSource="{Binding Forecast}"
+                        Spacing="10">
+
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="models:Forecast">
+
+                                <Border
+                                    Padding="15">
+
+                                    <Grid
+                                        RowDefinitions="auto,auto"
+                                        RowSpacing="10"
+                                        ColumnDefinitions="*,*,*,auto"
+                                        ColumnSpacing="15">
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Text="{Binding DayOfWeek}"
+                                            FontSize="17"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center">
+
+                                            <Label.Triggers>
+                                                
+                                                <DataTrigger
+                                                    TargetType="Label"
+                                                    Binding="{Binding IsBestDay}"
+                                                    Value="True">
+                                                    
+                                                    <Setter Property="TextColor"
+                                                            Value="{StaticResource Orange}" />
+                                                    
+                                                </DataTrigger>
+                                                
+                                            </Label.Triggers>
+
+                                        </Label>
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Text="{Binding MinTemperature, StringFormat='⬇️ {0}°C'}"
+                                            FontSize="17"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Text="{Binding MaxTemperature, StringFormat='⬆️ {0}°C'}"
+                                            FontSize="17"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="3"
+                                            Grid.RowSpan="2"
+                                            Text=">"
+                                            FontSize="17"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            FontSize="17">
+
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}🌧️ {0}% chance of {1}mm">
+                                                    <Binding Path="ChanceOfRainPercentage" />
+                                                    <Binding Path="MillimetersOfRain" />
+                                                </MultiBinding>
+                                            </Label.Text>
+
+                                        </Label>
+
+                                    </Grid>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding OpenDetailCommand, Source={RelativeSource AncestorType={x:Type viewModels:ForecastViewModel}}, x:DataType=viewModels:ForecastViewModel}"
+                                            CommandParameter="{Binding}" />
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </RefreshView>
+
+</ContentPage>

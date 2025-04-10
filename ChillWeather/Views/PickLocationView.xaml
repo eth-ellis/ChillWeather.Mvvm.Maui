@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ChillWeather.ViewModels"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:Class="ChillWeather.Views.PickLocationView"
+    x:DataType="viewModels:PickLocationViewModel">
+    
+    <ScrollView>
+        
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+            
+            <Label
+                Text="{Binding CurrentLocation, StringFormat='Current location: {0}'}"
+                FontSize="17" />
+            
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="True"/>
+            
+            <VerticalStackLayout
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertBool}}"
+                BindableLayout.ItemsSource="{Binding Locations}"
+                Spacing="10">
+                
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate
+                        x:DataType="system:String">
+                        
+                        <Border
+                            StrokeShape="RoundRectangle 10"
+                            Padding="15">
+                            
+                            <Label
+                                Text="{Binding}"
+                                FontSize="17" />
+                            
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding PickLocationCommand, Source={RelativeSource AncestorType={x:Type viewModels:PickLocationViewModel}}, x:DataType=viewModels:PickLocationViewModel}"
+                                    CommandParameter="{Binding}" />
+                            </Border.GestureRecognizers>
+                            
+                        </Border>
+                        
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            
+            </VerticalStackLayout>
+            
+            <Button
+                IsVisible="{Binding IsBusy, Converter={StaticResource InvertBool}}"
+                Text="Cancel"
+                TextColor="{StaticResource Orange}"
+                BackgroundColor="Transparent"
+                BorderColor="{StaticResource Orange}"
+                BorderWidth="1"
+                Command="{Binding CancelCommand}" />
+            
+        </VerticalStackLayout>
+        
+    </ScrollView>
+    
+</ContentPage>

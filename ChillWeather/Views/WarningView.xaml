@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    xmlns:viewModels="clr-namespace:ChillWeather.ViewModels"
+    x:Class="ChillWeather.Views.WarningView"
+    x:DataType="viewModels:WarningViewModel"
+    ios:Page.ModalPresentationStyle="PageSheet"
+    Shell.PresentationMode="ModalAnimated">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="20">
+
+            <Label
+                Text="{Binding Warning.Title}"
+                FontSize="28"
+                FontAttributes="Bold"
+                Margin="0,0,0,20" />
+
+            <Label
+                Text="Impacted Areas"
+                FontSize="17"
+                FontAttributes="Bold"
+                Margin="0,0,0,10" />
+            
+            <Label
+                Text="{Binding Warning.Description}"
+                FontSize="17"
+                Margin="0,0,0,20" />
+            
+            <Button
+                Text="Close"
+                TextColor="{StaticResource Orange}"
+                BackgroundColor="Transparent"
+                BorderColor="{StaticResource Orange}"
+                BorderWidth="1"
+                Command="{Binding CloseCommand}" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

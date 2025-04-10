@@ -3,13 +3,29 @@
     x:Class="ChillWeather.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ChillWeather"
-    Shell.FlyoutBehavior="Flyout"
-    Title="ChillWeather">
-
+    xmlns:views="clr-namespace:ChillWeather.Views"
+    FlyoutBehavior="Disabled"
+    Title="Chill Weather">
+    
+    <TabBar>
+        
+        <ShellContent
+            Icon="sun"
+            Title="Today"
+            ContentTemplate="{DataTemplate views:TodayView}"
+            Route="TodayView" />
+        
+        <ShellContent
+            Icon="calendar"
+            Title="Forecast"
+            ContentTemplate="{DataTemplate views:ForecastView}"
+            Route="ForecastView" />
+        
+    </TabBar>
+    
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Change Location"
+        ContentTemplate="{DataTemplate views:PickLocationView}"
+        Route="PickLocationView" />
 
 </Shell>

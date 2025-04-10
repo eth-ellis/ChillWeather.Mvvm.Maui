@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ChillWeather.ViewModels"
+    xmlns:models="clr-namespace:ChillWeather.Models"
+    x:Class="ChillWeather.Views.TodayView"
+    x:DataType="viewModels:TodayViewModel">
+
+    <RefreshView
+        IsRefreshing="{Binding IsRefreshing}"
+        Command="{Binding RefreshCommand}">
+
+        <ScrollView>
+
+            <VerticalStackLayout
+                Padding="20">
+
+                <Label
+                    Text="You're seeing weather for"
+                    FontSize="17"
+                    Margin="0,0,0,10" />
+
+                <Label
+                    Text="{Binding CurrentLocation}"
+                    FontSize="20"
+                    Margin="0,0,0,10" />
+
+                <Label
+                    Text="Change location"
+                    TextColor="{StaticResource Blue}"
+                    FontSize="17"
+                    FontAttributes="Bold"
+                    Margin="0,0,0,20">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ChangeLocationCommand}" />
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+                <ActivityIndicator
+                    IsVisible="{Binding IsBusy}"
+                    IsRunning="True" />
+
+                <VerticalStackLayout
+                    IsVisible="{Binding IsBusy, Converter={StaticResource InvertBool}}">
+
+                    <Label
+                        Text="Temperature (Celsius)"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,10" />
+
+                    <Grid
+                        ColumnSpacing="10"
+                        ColumnDefinitions="*,*,*"
+                        Margin="0,0,0,20">
+
+                        <Border
+                            Grid.Column="0"
+                            Padding="10">
+
+                            <VerticalStackLayout
+                                Spacing="10">
+
+                                <Label
+                                    Text="{Binding Forecast.MinTemperature}"
+                                    FontSize="28"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Minimum"
+                                    FontSize="15"
+                                    HorizontalOptions="Center" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <Border
+                            Grid.Column="1"
+                            Padding="10">
+
+                            <VerticalStackLayout
+                                Spacing="10">
+
+                                <Label
+                                    Text="{Binding Forecast.CurrentTemperature}"
+                                    FontSize="28"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Current"
+                                    FontSize="15"
+                                    HorizontalOptions="Center" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <Border
+                            Grid.Column="2"
+                            Padding="10">
+
+                            <VerticalStackLayout
+                                Spacing="10">
+
+                                <Label
+                                    Text="{Binding Forecast.MaxTemperature}"
+                                    FontSize="28"
+                                    HorizontalOptions="Center" />
+
+                                <Label
+                                    Text="Maximum"
+                                    FontSize="15"
+                                    HorizontalOptions="Center" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </Grid>
+                    
+                    <Label
+                        Text="Weather"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,10" />
+                    
+                    <Label
+                        FontSize="17"
+                        Margin="0,0,0,10">
+                        
+                        <Label.Text>
+                            <MultiBinding StringFormat="{}{0} {1} km/h wind">
+                                <Binding Path="Forecast.WindDirection" />
+                                <Binding Path="Forecast.WindSpeed" />
+                            </MultiBinding>
+                        </Label.Text>
+                        
+                    </Label>
+                    
+                    <Label
+                        Text="{Binding Forecast.HumidityPercentage, StringFormat='{0}% humidity'}"
+                        FontSize="17"
+                        Margin="0,0,0,10" />
+                    
+                    <Label
+                        FontSize="17"
+                        Margin="0,0,0,20">
+                        
+                        <Label.Text>
+                            <MultiBinding StringFormat="{}{0}% chance of {1}mm of rain">
+                                <Binding Path="Forecast.ChanceOfRainPercentage" />
+                                <Binding Path="Forecast.MillimetersOfRain" />
+                            </MultiBinding>
+                        </Label.Text>
+                        
+                    </Label>
+                    
+                    <Label
+                        Text="Sun"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,10" />
+                    
+                    <Label
+                        Text="{Binding Forecast.SunriseTime, StringFormat='The sun will rise at {0}'}"
+                        FontSize="17"
+                        Margin="0,0,0,10" />
+                    
+                    <Label
+                        Text="{Binding Forecast.SunsetTime, StringFormat='The sun will set at {0}'}"
+                        FontSize="17"
+                        Margin="0,0,0,20" />
+                    
+                    <Label
+                        Text="Warnings"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Margin="0,0,0,10" />
+                    
+                    <VerticalStackLayout
+                        BindableLayout.ItemsSource="{Binding Warnings}"
+                        Spacing="10">
+                        
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="models:Warning">
+                                
+                                <Border
+                                    Stroke="{StaticResource Red}"
+                                    Padding="15">
+                                    
+                                    <Grid
+                                        RowSpacing="10"
+                                        RowDefinitions="auto,auto"
+                                        ColumnSpacing="10"
+                                        ColumnDefinitions="*,auto">
+                                        
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Text="{Binding Title}"
+                                            FontSize="17" />
+                                        
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Text="Open to see impacted areas"
+                                            FontSize="15" />
+                                        
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Grid.RowSpan="2"
+                                            Text=">"
+                                            FontSize="17"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center" />
+                                        
+                                    </Grid>
+                                    
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding OpenWarningCommand, Source={RelativeSource AncestorType={x:Type viewModels:TodayViewModel}}, x:DataType=viewModels:TodayViewModel}"
+                                            CommandParameter="{Binding}" />
+                                    </Border.GestureRecognizers>
+                                    
+                                </Border>
+                                
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                        
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </RefreshView>
+
+</ContentPage>
