@@ -1,3 +1,4 @@
+using ChillWeather.Helpers;
 using ChillWeather.Models;
 using ChillWeather.Services;
 using ChillWeather.ViewModels.Base;
@@ -21,6 +22,8 @@ public partial class WarningViewModel : BaseViewModel, IQueryAttributable
     
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        DebugHelper.WriteQueryAttributes(query, nameof(WarningViewModel));
+
         if (query.TryGetValue("Warning", out var warning) && warning is Warning warningValue)
         {
             this.Warning = warningValue;

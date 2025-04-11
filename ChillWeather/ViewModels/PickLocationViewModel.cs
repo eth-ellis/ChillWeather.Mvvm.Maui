@@ -1,3 +1,4 @@
+using ChillWeather.Helpers;
 using ChillWeather.Services;
 using ChillWeather.ViewModels.Base;
 using ChillWeather.Views;
@@ -32,6 +33,8 @@ public partial class PickLocationViewModel : BaseViewModel, IQueryAttributable
     
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        DebugHelper.WriteQueryAttributes(query, nameof(PickLocationViewModel));
+
         if (query.TryGetValue("Route", out var route) && route is string routeValue)
         {
             this.route = routeValue;

@@ -1,3 +1,4 @@
+using ChillWeather.Helpers;
 using ChillWeather.Models;
 using ChillWeather.Services;
 using ChillWeather.ViewModels.Base;
@@ -31,7 +32,7 @@ public partial class TodayViewModel : BaseViewModel
     
     [ObservableProperty]
     private List<Warning> warnings;
-
+    
     public override async Task InitialiseAsync()
     {
         await base.InitialiseAsync();
@@ -64,6 +65,12 @@ public partial class TodayViewModel : BaseViewModel
     [RelayCommand]
     private async Task ChangeLocation()
     {
+        DebugHelper.WriteScenario("Pass data to ViewModel during root navigation");
+        DebugHelper.WriteNote(
+            "When navigating to root i.e. changing shell item, ApplyQueryAttributes fires after InitialiseAsync.",
+            "This is caused by https://github.com/dotnet/maui/issues/24241",
+            "This can be seen below:");
+        
         await this.navigationService.GoToRootAsync<PickLocationView>(new Dictionary<string, object>
         {
             { "Route", nameof(TodayView) }
@@ -73,6 +80,8 @@ public partial class TodayViewModel : BaseViewModel
     [RelayCommand]
     private async Task OpenWarning(Warning warning)
     {
+        DebugHelper.WriteScenario("Pass data to ViewModel during modal navigation");
+
         await this.navigationService.GoToAsync<WarningView>(new Dictionary<string, object>
         {
             { "Warning", warning }

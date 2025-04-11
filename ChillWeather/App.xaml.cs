@@ -1,4 +1,6 @@
-﻿namespace ChillWeather;
+﻿using System.Diagnostics;
+
+namespace ChillWeather;
 
 public partial class App : Application
 {
@@ -10,5 +12,12 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState? activationState)
     {
         return new Window(new AppShell());
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        
+        Debug.WriteLine("");
     }
 }

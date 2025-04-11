@@ -1,3 +1,4 @@
+using ChillWeather.Helpers;
 using ChillWeather.Models;
 using ChillWeather.ViewModels.Base;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,6 +12,8 @@ public partial class ForecastDetailViewModel : BaseViewModel, IQueryAttributable
     
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        DebugHelper.WriteQueryAttributes(query, nameof(ForecastDetailViewModel));
+
         if (query.TryGetValue("Forecast", out var forecast) && forecast is Forecast forecastValue)
         {
             this.Forecast = forecastValue;

@@ -1,3 +1,4 @@
+using ChillWeather.Helpers;
 using ChillWeather.Models;
 using ChillWeather.Services;
 using ChillWeather.ViewModels.Base;
@@ -33,6 +34,8 @@ public partial class ForecastViewModel : BaseViewModel, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
+        DebugHelper.WriteQueryAttributes(query, nameof(ForecastViewModel));
+        
         if (query.TryGetValue("WeatherPreference", out var weatherPreference) && weatherPreference is string weatherPreferenceValue)
         {
             this.weatherPreference = weatherPreferenceValue;
@@ -90,6 +93,12 @@ public partial class ForecastViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     private async Task ChangeLocation()
     {
+        DebugHelper.WriteScenario("Pass data to ViewModel during root navigation");
+        DebugHelper.WriteNote(
+            "When navigating to root i.e. changing shell item, ApplyQueryAttributes fires after InitialiseAsync.",
+            "This is caused by https://github.com/dotnet/maui/issues/24241",
+            "This can be seen below:");
+        
         await this.navigationService.GoToRootAsync<PickLocationView>(new Dictionary<string, object>
         {
             { "Route", nameof(ForecastView) }
@@ -99,12 +108,16 @@ public partial class ForecastViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     private async Task FindBestDay()
     {
+        DebugHelper.WriteScenario("Open modal which will pass data to previous ViewModel on backwards navigation");
+        
         await this.navigationService.GoToAsync<FindBestDayView>();
     }
     
     [RelayCommand]
     private async Task OpenDetail(Forecast forecast)
     {
+        DebugHelper.WriteScenario("Pass data to ViewModel during normal navigation");
+        
         await this.navigationService.GoToAsync<ForecastDetailView>(new Dictionary<string, object>
         {
             { "Forecast", forecast }
